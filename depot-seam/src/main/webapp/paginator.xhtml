@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+		<f:verbatim>
+			<script language="JavaScript">
+	        function handlePagerKeyPress(frm, e) {
+	                if (window.event) { e = window.event; }
+	                if (e.keyCode == 13) {
+		                	var name = frm.name + ":PagerRefresh";
+	                        document.getElementById(name).click();
+	                }
+	        }
+	        </script>
+        </f:verbatim>
+
+
+	<table cellpadding="0" cellspacing="2" width="100%" style="font-size: 10px">
+		<tr>
+			<td width="100%" style="border-bottom: 1px solid #b2b2b2"></td>
+		</tr>
+	</table>
+	
+	<table id="mainPaginator" cellpadding="0" cellspacing="2" width="100%" 
+	style="font-size: 10px">
+		<tr>
+			<td width="100%"></td>
+			<td><a4j:commandButton id="PagerFirst#{IDNumber}" styleClass="pageButton"
+				image="#{pager.hasFirstPage() ? '/resources/images/backBActive.gif' : '/resources/images/backB.gif'}"
+				disabled="#{!pager.hasFirstPage()}"
+				actionListener="#{pager.goFirstPage()}"				
+				style=" width: 11px; height: 13px" reRender="#{refresh}"  ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+			</td>
+			<td><a4j:commandButton id="PagerPrevious#{IDNumber}"				
+				styleClass="pageButton"
+				image="#{pager.hasPreviousPage() ? '/resources/images/backActive.gif' : '/resources/images/back.gif'}"
+				disabled="#{!pager.hasPreviousPage()}"
+				actionListener="#{pager.goPreviousPage()}"
+				style="height: 13px; width : 9px;" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+			</td>
+
+			<td align="center" nowrap="nowrap"><h:outputText
+				styleClass="pagerInfo" 
+				value="Page #{pager.currentPage} of #{pager.lastPage}  
+				 , showing  #{pager.pageSize} / #{pager.totalSize} items" /></td>
+
+			<td><a4j:commandButton id="PagerNext#{IDNumber}" styleClass="pageButton"				
+				image="#{pager.hasNextPage() ? '/resources/images/forwardActive.gif' : '/resources/images/forward.gif'}"
+				disabled="#{!pager.hasNextPage()}"
+				actionListener="#{pager.goNextPage()}"
+				style=" width: 9px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+			</td>
+			<td><a4j:commandButton id="PagerLast#{IDNumber}" styleClass="pageButton"				
+				image="#{pager.hasLastPage() ? '/resources/images/forwardFActive.gif' : '/resources/images/forwardF.gif'}"
+				disabled="#{!pager.hasLastPage()}"
+				actionListener="#{pager.goLastPage()}"
+				style=" width: 11px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+			</td>
+			<s:fragment rendered="#{showPageSize}">
+				<td>#{messages['paginator.show']}:</td>
+				<td><h:inputText id="pageSizeId#{IDNumber}" value="#{pager.pageSize}" onkeypress="javascript:handlePagerKeyPress(this.form, event);"
+					style="width: 18px; height: 12px; padding: 0; font-size:10px">											
+					</h:inputText>
+				</td>
+				<td>
+					<a4j:commandButton id="PagerRefresh#{IDNumber}"					
+						styleClass="pageButton" image="/resources/images/refresh.gif"
+						actionListener="#{pager.refresh()}"
+						style=" width: 12px; height: 13px" reRender="#{refresh}"
+						eventsQueue="pagerQueue#{IDNumber}">						
+					</a4j:commandButton>
+				</td>
+				<td>#{messages['paginator.itemsPage']}</td>
+			</s:fragment>
+
+		</tr>
+	</table>
+		
+</ui:composition>

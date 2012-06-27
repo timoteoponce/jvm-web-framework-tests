@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="form">
+			<h:messages />
+			<h:commandButton value="Create new" action="/scaffold/product/create.xhtml?faces-redirect=true" >
+				<f:param name="productId" value=""/>
+			</h:commandButton>			
+			<br />
+			
+
+			<a4j:outputPanel id="listPanel" ajaxRendered="true">
+				<a4j:repeat value="#{productController.paginator.list}"
+					var="_product">
+					<div class="entry">
+						<h:graphicImage value="#{_product.imageUrl}" />
+						#{_product.imageUrl}
+						<h3>#{_product.title}</h3>
+						<div class="price_line">
+							<span class="price">Price: #{_product.price}</span>							
+						</div>
+					</div>
+				</a4j:repeat>
+			</a4j:outputPanel>
+			
+			<ui:include src="/paginator.xhtml">
+				<ui:param name="pager" value="#{productController.paginator}" />
+				<ui:param name="refresh" value="listPanel" />
+				<ui:param name="showPageSize" value="true" />
+			</ui:include>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
