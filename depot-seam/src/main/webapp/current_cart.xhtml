@@ -6,19 +6,22 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
-	
-	<ui:define name="sideContent">
-		<ui:include src="/current_cart.xhtml" />
-	</ui:define>
-	
-	<ui:define name="content">
-		<h2>Welcome #{credentials.username} !!</h2>
-		
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<a4j:outputPanel id="currentCart" ajaxRendered="true">
+
+		<h3>Shopping cart</h3>
+
 		<ul>
-			<li><a href="./scaffold/product/list.xhtml">Products</a></li>
+			<a4j:repeat value="#{currentCart.lineItems}" var="_item">
+				<li>#{_item.product.title} x #{_item.quantity}</li>
+			</a4j:repeat>
 		</ul>
-	</ui:define>
+		<span>Total : #{currentCart.totalPrice()}</span>
+		<h:commandButton action="#{currentCart.newCart()}" value="new Cart" />
+
+	</a4j:outputPanel>
+
 </ui:composition>
 
 

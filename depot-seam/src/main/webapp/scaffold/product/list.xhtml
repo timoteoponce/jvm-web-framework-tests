@@ -8,6 +8,10 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
 	
+	<ui:define name="sideContent">
+		<ui:include src="/current_cart.xhtml" />
+	</ui:define>
+		
 	<ui:define name="content">
 		<h:form>
 			<h:messages />
@@ -27,6 +31,8 @@
 						<div class="price_line">
 							<span class="price">Price: #{_product.price}</span>							
 						</div>
+						<a4j:commandButton value="Add to cart" action="#{currentCart.setProduct(_product)}"
+							execute="@this" oncomplete="#{rich:component('popup')}.show();"/>												
 					</div>
 				</a4j:repeat>
 				
@@ -37,6 +43,33 @@
 				</ui:include>
 			</a4j:outputPanel>
 			
+		</h:form>
+		<h:form>
+			<rich:popupPanel id="popup" modal="false" autosized="false" resizeable="false">
+	        	<f:facet name="header">
+	            	<h:outputText value="Add to cart" />
+	        	</f:facet>
+		        <f:facet name="controls">
+		            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+		                X
+		            </h:outputLink>		            
+		        </f:facet>
+		        <h:panelGrid columns="2">
+		        	Quantity		        	
+		        	<rich:inputNumberSpinner id="spinner" value="#{currentCart.quantity}" minValue="1">
+		        		<f:ajax event="blur" execute="@this" render="spinner"/>
+		        	</rich:inputNumberSpinner>
+		        	<h:inputText id="spinner2" value="#{currentCart.quantity}">
+		        		<a4j:ajax event="keyup" render="field1" />
+		        	</h:inputText>		        	
+		        	<h:outputText id="field1" value="#{currentCart.quantity}" />		        	
+		        	<a4j:commandButton value="Save" action="#{currentCart.addItem()}" 
+		        		execute="@this" render="currentCart" oncomplete="#{rich:component('popup')}.hide();return true;"/>
+		        	<button type="button" onclick="#{rich:component('popup')}.hide();return true;">
+		        		Cancel
+		        	</button>		        	
+		        </h:panelGrid>
+			</rich:popupPanel>
 		</h:form>
 	</ui:define>
 </ui:composition>
