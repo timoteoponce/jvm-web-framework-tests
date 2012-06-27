@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+	<ui:insert name="metadata" />
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Depot</title>
+		<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+
+		<h:outputStylesheet library="css" name="depot.css" />
+		<ui:insert name="head" />
+	</h:head>
+	<body id="store">
+		<div id="banner">
+			<h:graphicImage value="/resources/images/logo.png" />
+			Bookshelf
+		</div>
+		<div id="columns">
+			<div id="side">
+				<a href="http://www....">Home</a><br /> <a
+					href="http://www..../faq">Questions</a><br /> <a
+					href="http://www..../news">News</a><br /> <a
+					href="http://www..../contact">Contact</a><br />
+				<ui:insert name="sideContent"/>
+			</div>
+			<div id="main">
+				<ui:insert name="content"/>
+			</div>
+		</div>
+	</body>
+</f:view>
+</html>
