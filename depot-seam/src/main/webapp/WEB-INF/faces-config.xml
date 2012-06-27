@@ -5,6 +5,26 @@
 	version="2.0">
 
 	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-action>#{identity.logout()}</from-action>
+			<if>#{true}</if>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{identity.login()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
 		<from-view-id>/scaffold/product/create.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>SAVED</from-outcome>
@@ -12,7 +32,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>/scaffold/product/create.xhtml</from-view-id>
 		<navigation-case>

@@ -18,14 +18,19 @@
 		<div id="banner">
 			<h:graphicImage value="/resources/images/logo.png" />
 			Bookshelf
+			<h:form>
+				<h:commandLink value="Logout" action="#{identity.logout()}" rendered="#{identity.loggedIn}" />
+			</h:form>
 		</div>
 		<div id="columns">
 			<div id="side">
-				<a href="http://www....">Home</a><br /> <a
-					href="http://www..../faq">Questions</a><br /> <a
-					href="http://www..../news">News</a><br /> <a
-					href="http://www..../contact">Contact</a><br />
-				<ui:insert name="sideContent"/>
+				<h:panelGroup rendered="#{identity.loggedIn}">
+					<a href="/depot-seam/faces/index.xhtml">Home</a><br /> <a
+						href="http://www..../faq">Questions</a><br /> <a
+						href="http://www..../news">News</a><br /> <a
+						href="http://www..../contact">Contact</a><br />
+					<ui:insert name="sideContent"/>
+				</h:panelGroup>
 			</div>
 			<div id="main">
 				<ui:insert name="content"/>

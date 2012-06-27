@@ -9,11 +9,17 @@
 	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
 	
 	<ui:define name="content">
-		<h2>Welcome #{credentials.username} !!</h2>
-		
-		<ul>
-			<li><a href="./scaffold/product/list.xhtml">Products</a></li>
-		</ul>
+		<h:form id="loginForm" rendered="#{not identity.loggedIn}">
+
+        <div class="loginRow">
+          <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
+          <h:inputText id="name" value="#{credentials.username}"/>
+        </div>
+
+        <div class="buttons">
+          <h:commandButton id="login" value="LOGIN" action="#{identity.login()}" styleClass="loginButton"/>
+        </div>
+      </h:form>
 	</ui:define>
 </ui:composition>
 

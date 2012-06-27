@@ -11,6 +11,10 @@ import javax.persistence.Version;
 
 @Entity
 public class Cart implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7286513736770725522L;
 	@Id
 	private @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, nullable = false)
@@ -18,6 +22,9 @@ public class Cart implements java.io.Serializable {
 	@Version
 	private @Column(name = "version")
 	int version = 0;
+
+	@Column
+	private Date creationDate;
 
 	public long getId() {
 		return this.id;
@@ -34,9 +41,6 @@ public class Cart implements java.io.Serializable {
 	public void setVersion(final int version) {
 		this.version = version;
 	}
-
-	@Column
-	private Date creationDate;
 
 	public Date getCreationDate() {
 		return this.creationDate;
