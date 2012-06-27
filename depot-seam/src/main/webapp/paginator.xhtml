@@ -33,14 +33,16 @@
 				image="#{pager.hasFirstPage() ? '/resources/images/backBActive.gif' : '/resources/images/backB.gif'}"
 				disabled="#{!pager.hasFirstPage()}"
 				actionListener="#{pager.goFirstPage()}"				
-				style=" width: 11px; height: 13px" reRender="#{refresh}"  ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+				style=" width: 11px; height: 13px" reRender="#{refresh}"  ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}">				
+				</a4j:commandButton>
 			</td>
 			<td><a4j:commandButton id="PagerPrevious#{IDNumber}"				
 				styleClass="pageButton"
 				image="#{pager.hasPreviousPage() ? '/resources/images/backActive.gif' : '/resources/images/back.gif'}"
 				disabled="#{!pager.hasPreviousPage()}"
 				actionListener="#{pager.goPreviousPage()}"
-				style="height: 13px; width : 9px;" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+				style="height: 13px; width : 9px;" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}">
+				</a4j:commandButton>
 			</td>
 
 			<td align="center" nowrap="nowrap"><h:outputText
@@ -52,13 +54,15 @@
 				image="#{pager.hasNextPage() ? '/resources/images/forwardActive.gif' : '/resources/images/forward.gif'}"
 				disabled="#{!pager.hasNextPage()}"
 				actionListener="#{pager.goNextPage()}"
-				style=" width: 9px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+				style=" width: 9px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}">					
+				</a4j:commandButton>
 			</td>
 			<td><a4j:commandButton id="PagerLast#{IDNumber}" styleClass="pageButton"				
 				image="#{pager.hasLastPage() ? '/resources/images/forwardFActive.gif' : '/resources/images/forwardF.gif'}"
 				disabled="#{!pager.hasLastPage()}"
 				actionListener="#{pager.goLastPage()}"
-				style=" width: 11px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}"/>
+				style=" width: 11px; height: 13px" reRender="#{refresh}" ignoreDupResponses="true" eventsQueue="pagerQueue#{IDNumber}">				
+				</a4j:commandButton>
 			</td>
 			<s:fragment rendered="#{showPageSize}">
 				<td>#{messages['paginator.show']}:</td>
@@ -71,13 +75,12 @@
 						styleClass="pageButton" image="/resources/images/refresh.gif"
 						actionListener="#{pager.refresh()}"
 						style=" width: 12px; height: 13px" reRender="#{refresh}"
-						eventsQueue="pagerQueue#{IDNumber}">						
+						eventsQueue="pagerQueue#{IDNumber}">												
 					</a4j:commandButton>
 				</td>
 				<td>#{messages['paginator.itemsPage']}</td>
 			</s:fragment>
 
 		</tr>
-	</table>
-		
+	</table>				
 </ui:composition>

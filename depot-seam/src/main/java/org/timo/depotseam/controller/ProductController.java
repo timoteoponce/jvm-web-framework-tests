@@ -23,7 +23,7 @@ import org.timo.paginator.Segment;
 import org.timo.paginator.SegmentProvider;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class ProductController implements Serializable {
 
 	/**
@@ -58,7 +58,7 @@ public class ProductController implements Serializable {
 				return query.getResultList();
 			}
 		});
-		paginator.setPageSize(5);
+		paginator.setPageSize(2);
 	}
 
 	public Paginator<Product> getPaginator() {
