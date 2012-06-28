@@ -7,70 +7,65 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
-	
+
 	<ui:define name="sideContent">
 		<ui:include src="/current_cart.xhtml" />
 	</ui:define>
-		
+
 	<ui:define name="content">
 		<h:form>
 			<h:messages />
-			<h:commandButton value="Create new" action="/scaffold/product/create.xhtml?faces-redirect=true" >
-				<f:param name="productId" value=""/>
+			<h:commandButton value="Create new"
+				action="/scaffold/product/create.xhtml?faces-redirect=true">
+				<f:param name="productId" value="" />
 			</h:commandButton>
 		</h:form>
-		<h:form>			
-			<br />			
+
+		<h:form>
+			<a4j:outputPanel ajaxRendered="true">
+				<h:panelGroup id="addItemPanel"
+					rendered="#{currentCart.itemSelected}">
+					<h3>Add to cart : #{currentCart.product.title}</h3>
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Quantity: " />
+						<rich:inputNumberSpinner id="spinner2"
+							value="#{currentCart.quantity}" minValue="1">
+							<a4j:ajax render="spinner2" event="change" />
+						</rich:inputNumberSpinner>
+					</h:panelGrid>
+					<h:commandButton action="#{currentCart.addItem()}" value="Save" />
+					<a4j:commandButton action="#{currentCart.cancel()}" value="Cancel"
+						execute="@this" render="addItemPanel" />
+				</h:panelGroup>
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<br />
 
 			<a4j:outputPanel id="listPanel" ajaxRendered="true">
 				<a4j:repeat value="#{productController.paginator.list}"
 					var="_product">
 					<div class="entry">
-						<h:graphicImage value="#{_product.imageUrl}" />						
+						<h:graphicImage value="#{_product.imageUrl}" />
 						<h3>#{_product.title}</h3>
 						<div class="price_line">
-							<span class="price">Price: #{_product.price}</span>							
+							<span class="price">Price: #{_product.price}</span>
 						</div>
-						<a4j:commandButton value="Add to cart" action="#{currentCart.setProduct(_product)}"
-							execute="@this" oncomplete="#{rich:component('popup')}.show();"/>												
+						<a4j:commandButton value="Add to cart"
+							action="#{currentCart.setProduct(_product)}"
+							render="addItemPanel" />
 					</div>
 				</a4j:repeat>
-				
+
 				<ui:include src="/paginator.xhtml">
 					<ui:param name="pager" value="#{productController.paginator}" />
 					<ui:param name="refresh" value="listPanel" />
 					<ui:param name="showPageSize" value="true" />
 				</ui:include>
 			</a4j:outputPanel>
-			
 		</h:form>
-		<h:form>
-			<rich:popupPanel id="popup" modal="false" autosized="false" resizeable="false">
-	        	<f:facet name="header">
-	            	<h:outputText value="Add to cart" />
-	        	</f:facet>
-		        <f:facet name="controls">
-		            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
-		                X
-		            </h:outputLink>		            
-		        </f:facet>
-		        <h:panelGrid columns="2">
-		        	Quantity		        	
-		        	<rich:inputNumberSpinner id="spinner" value="#{currentCart.quantity}" minValue="1">
-		        		<f:ajax event="blur" execute="@this" render="spinner"/>
-		        	</rich:inputNumberSpinner>
-		        	<h:inputText id="spinner2" value="#{currentCart.quantity}">
-		        		<a4j:ajax event="keyup" render="field1" />
-		        	</h:inputText>		        	
-		        	<h:outputText id="field1" value="#{currentCart.quantity}" />		        	
-		        	<a4j:commandButton value="Save" action="#{currentCart.addItem()}" 
-		        		execute="@this" render="currentCart" oncomplete="#{rich:component('popup')}.hide();return true;"/>
-		        	<button type="button" onclick="#{rich:component('popup')}.hide();return true;">
-		        		Cancel
-		        	</button>		        	
-		        </h:panelGrid>
-			</rich:popupPanel>
-		</h:form>
+
 	</ui:define>
 </ui:composition>
 

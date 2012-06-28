@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,6 +18,7 @@ import org.timo.depotseam.model.LineItem;
 import org.timo.depotseam.model.Product;
 
 @Named
+@Stateful
 @SessionScoped
 public class CurrentCart implements Serializable {
 
@@ -31,7 +34,9 @@ public class CurrentCart implements Serializable {
 
 	private Integer quantity = 1;
 
-	private Product product;
+	private Product product = new Product();
+
+	private boolean itemSelected;
 
 	public void addItem() {
 		save();
@@ -42,23 +47,36 @@ public class CurrentCart implements Serializable {
 		item.setQuantity(quantity);
 		cart.getLineItems().add(item);
 		entityManager.persist(item);
+		clean();
+	}
+
+	private void clean() {
+		product = new Product();
 		quantity = 1;
+		itemSelected = false;
+	}
+
+	public void cancel() {
+		clean();
 	}
 
 	public void save() {
 		if (cart.getId() > 0) {
 			cart = entityManager.merge(cart);
-		}else{
+		} else {
 			entityManager.persist(cart);
 		}
 	}
 
 	public void newCart() {
 		if (cart.getId() > 0) {
+			cart = entityManager.merge(cart);
 			for (LineItem item : cart.getLineItems()) {
-				entityManager.remove(item);
+				entityManager.remove(entityManager.merge(item));
 			}
 			cart.getLineItems().clear();
+			cart = new Cart();
+			entityManager.persist(cart);
 		}
 		cart.setCreationDate(new Date());
 	}
@@ -72,7 +90,7 @@ public class CurrentCart implements Serializable {
 		for (LineItem item : cart.getLineItems()) {
 			BigDecimal itemPrice = BigDecimal.valueOf(item.getQuantity())
 					.multiply(item.getProduct().getPrice());
-			totalPrice.add(itemPrice);
+			totalPrice = totalPrice.add(itemPrice);			
 		}
 		return totalPrice;
 	}
@@ -87,7 +105,14 @@ public class CurrentCart implements Serializable {
 
 	public void setProduct(Product product) {
 		this.product = entityManager.merge(product);
-		System.out.println("SEt product : "+product.getId());
+		itemSelected = true;
 	}
 
+	public Product getProduct() {
+		return product;
+	}
+
+	public boolean isItemSelected() {
+		return itemSelected;
+	}
 }

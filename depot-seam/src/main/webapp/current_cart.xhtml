@@ -18,7 +18,9 @@
 			</a4j:repeat>
 		</ul>
 		<span>Total : #{currentCart.totalPrice()}</span>
-		<h:commandButton action="#{currentCart.newCart()}" value="new Cart" />
+		<h:form>
+			<h:commandButton action="#{currentCart.newCart()}" value="new Cart" />
+		</h:form>
 
 	</a4j:outputPanel>
 

@@ -49,7 +49,7 @@
 						<div class="#{productEditController.getImage() == pic ? 'selected' : ''}">
 							<h:graphicImage url="#{pic}"/>
 						</div>
-						<a4j:commandButton value="Select" action="#{productEditController.withImage(pic)}" reRender="repeat"
+						<a4j:commandButton value="Select" action="#{productEditController.withImage(pic)}"
 							execute="@this"/>
 					</a4j:repeat>
 				</a4j:outputPanel>
