@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import org.jboss.seam.security.Credentials;
 import org.timo.depotseam.model.Cart;
 import org.timo.depotseam.model.LineItem;
 import org.timo.depotseam.model.Product;
@@ -29,6 +30,9 @@ public class CurrentCart implements Serializable {
 
 	@Inject
 	private EntityManager entityManager;
+	
+	@Inject
+	private Credentials credentials;
 
 	private Cart cart = new Cart();
 
@@ -64,6 +68,7 @@ public class CurrentCart implements Serializable {
 		if (cart.getId() > 0) {
 			cart = entityManager.merge(cart);
 		} else {
+			cart.setUsername(credentials.getUsername());
 			entityManager.persist(cart);
 		}
 	}
@@ -85,9 +90,14 @@ public class CurrentCart implements Serializable {
 		return new ArrayList<LineItem>(cart.getLineItems());
 	}
 
-	public BigDecimal totalPrice() {
+	public BigDecimal totalPrice() {		
+		return totalPrice(cart);
+	}
+	
+	public BigDecimal totalPrice(Cart cart) {
+		Cart localCart = entityManager.merge(cart);
 		BigDecimal totalPrice = new BigDecimal(0);
-		for (LineItem item : cart.getLineItems()) {
+		for (LineItem item : localCart.getLineItems()) {
 			BigDecimal itemPrice = BigDecimal.valueOf(item.getQuantity())
 					.multiply(item.getProduct().getPrice());
 			totalPrice = totalPrice.add(itemPrice);			

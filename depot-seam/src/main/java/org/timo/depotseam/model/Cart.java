@@ -28,6 +28,12 @@ public class Cart implements java.io.Serializable {
 
 	@Column
 	private Date creationDate;
+	
+	@Column
+	private String username;
+	
+	@Column
+	private boolean dismissed;
 
 	@OneToMany(mappedBy = "cart")
 	private Set<LineItem> lineItems = new HashSet<LineItem>();
@@ -59,5 +65,23 @@ public class Cart implements java.io.Serializable {
 	public Set<LineItem> getLineItems() {
 		return lineItems;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public boolean isDismissed() {
+		return dismissed;
+	}
+
+	public void setDismissed(boolean dismissed) {
+		this.dismissed = dismissed;
+	}
+	
+	
 
 }

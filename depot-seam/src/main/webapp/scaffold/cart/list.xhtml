@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/template.xhtml">
+
+	<ui:define name="sideContent">
+		<ui:include src="/current_cart.xhtml" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h3>Carts</h3>
+		<h:form>
+			<br />
+
+			<a4j:outputPanel id="listPanel" ajaxRendered="true">
+				<a4j:repeat value="#{cartController.paginator.list}"
+					var="_cart">
+					<div class="entry">						
+						<h3>#{_cart.id}</h3>
+						<div class="price_line">
+							<span class="price">TotalPrice: #{currentCart.totalPrice(_cart)}</span>							
+							<span class="price">Status: #{_cart.dismissed ? 'dismissed':'active'}</span>
+						</div>
+						<a4j:commandButton action="#{cartController.dismiss(_cart)}" value="Dismiss"
+							execute="@this" render="listPanel" rendered="#{not _cart.dismissed}"/>
+					</div>
+				</a4j:repeat>
+
+				<ui:include src="/paginator.xhtml">
+					<ui:param name="pager" value="#{cartController.paginator}" />
+					<ui:param name="refresh" value="listPanel" />
+					<ui:param name="showPageSize" value="true" />
+				</ui:include>
+			</a4j:outputPanel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+
